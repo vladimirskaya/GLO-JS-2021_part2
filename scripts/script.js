@@ -42,4 +42,35 @@ window.addEventListener('DOMContentLoaded', function(){
     countTimer('31 july 2019');
         // setInterval(countTimer, 1000,'31 july 2021');
 
+
+        //menu
+        const toggleMenu = () => {
+                
+            const btnMenu = document.querySelector('.menu'),
+                menu = document.querySelector('menu'),
+                closeBtn = document.querySelector('.close-btn'),
+                menuItems = menu.querySelectorAll('ul>li');
+
+
+            btnMenu.addEventListener('click', () => {
+                if (!menu.style.transform || menu.style.transform === `translate(-100%)`)   {
+                    menu.style.transform = `translate(0)`;
+                }else{
+                    menu.style.transform = `translate(-100%)`;
+                }
+                
+                });
+                closeBtn.addEventListener('click', () => {
+                    menu.style.transform = `translate(-100%)`;
+                });
+
+            for (let i = 0; i < menuItems.length; i++){
+                menuItems[i].addEventListener('click', () => {
+                    menu.style.transform = `translate(-100%)`;
+                });
+
+            }
+        };
+
+        toggleMenu();
 })
