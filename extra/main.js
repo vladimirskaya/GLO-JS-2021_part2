@@ -35,11 +35,11 @@ let today = new Date();
 	
 	function getCorrectDays(amount){
 		if (amount % 10 === 1){
-			return amount + ' день.'
+			return amount + ' день.';
 		}else if (amount % 10 === 2 || amount % 10 === 3 || amount % 10 === 4){
-			return amount + ' дня.'
+			return amount + ' дня.';
 		}else {
-			return amount + ' дней.'
+			return amount + ' дней.';
 		}
 	}
 
