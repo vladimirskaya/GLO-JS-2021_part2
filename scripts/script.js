@@ -48,7 +48,7 @@ window.addEventListener('DOMContentLoaded', function(){
     }
 
     countTimer('31 july 2021');
-})
+
 
 
         //menu
