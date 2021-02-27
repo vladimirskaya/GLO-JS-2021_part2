@@ -44,7 +44,10 @@ window.addEventListener('DOMContentLoaded', function(){
         }
 
 		let comeOn = setTimeout(updateClock, 1000);
-		countTimer('31 july 2020');
-	}}
+
+    }
+
+    countTimer('31 july 2020');
+})
 
     
