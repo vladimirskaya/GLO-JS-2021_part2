@@ -36,8 +36,7 @@ window.addEventListener('DOMContentLoaded', function(){
             console.log(timer);
 			if (timer.timeRemaining < 0){
 				document.querySelector('.timer-numbers').style.color = 'red';
-				clearTimeout();
-				//clearInterval(comeOn);
+				clearTimeout(comeOn);
 			}else{
 				setTimeout(updateClock,1000);
 			}
@@ -46,8 +45,7 @@ window.addEventListener('DOMContentLoaded', function(){
             timeSeconds.textContent = correctTimeView(timer.seconds);           
         }
 
-		updateClock();
-		// let comeOn = setInterval(updateClock, 1000);
+		let comeOn = setTimeout(updateClock, 1000);
 
     }
 
