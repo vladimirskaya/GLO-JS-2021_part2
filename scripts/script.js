@@ -43,18 +43,6 @@ window.addEventListener('DOMContentLoaded', function(){
             timeSeconds.textContent = correctTimeView(timer.seconds);           
         }
 
-<<<<<<< HEAD
-		let comeOn = setInterval(updateClock, 1000);
-
-    }
-
-    countTimer('31 july 2021');
-
-
-
-        //menu
-        const toggleMenu = () => {
-=======
 		let comeOn = setTimeout(updateClock, 1000);
 
     }
@@ -63,7 +51,6 @@ window.addEventListener('DOMContentLoaded', function(){
 
     //menu
     const toggleMenu = () => {
->>>>>>> 0992b5cdf1d955c65d16e8402095bf3f86185197
                 
             const btnMenu = document.querySelector('.menu'),
                 menu = document.querySelector('menu'),
@@ -71,25 +58,12 @@ window.addEventListener('DOMContentLoaded', function(){
                 menuItems = menu.querySelectorAll('ul>li');
 
             const handlerMenu = function(){
-<<<<<<< HEAD
                     menu.classList.toggle('active-menu');
-=======
-                    if (!menu.style.transform || menu.style.transform === `translate(-100%)`)   {
-                        menu.style.transform = `translate(0)`;
-                    }else{
-                        menu.style.transform = `translate(-100%)`;
-                }
->>>>>>> 0992b5cdf1d955c65d16e8402095bf3f86185197
             };
             btnMenu.addEventListener('click', handlerMenu);
             closeBtn.addEventListener('click', handlerMenu);
 
             menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
-<<<<<<< HEAD
-        };
-
-        toggleMenu();
-=======
     };
 
     toggleMenu();
@@ -105,7 +79,6 @@ window.addEventListener('DOMContentLoaded', function(){
 			});
 		popupClose.addEventListener('click', () => popup.style.display = 'none')
 		}   
->>>>>>> 0992b5cdf1d955c65d16e8402095bf3f86185197
 })
 
     
