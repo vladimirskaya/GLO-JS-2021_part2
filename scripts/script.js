@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', function(){
-    'use strict'
+    'use strict';
 
     // Timer
     function countTimer(deadline){
@@ -33,26 +33,24 @@ window.addEventListener('DOMContentLoaded', function(){
 		
         function updateClock() {
             let timer = getTimeRemaining();
-            //console.log(timer);
+            console.log(timer);
 			if (timer.timeRemaining < 0){
 				document.querySelector('.timer-numbers').style.color = 'red';
-				clearInterval(comeOn);
+				clearTimeout(comeOn);
 			}
             timeHours.textContent = correctTimeView(timer.hours);
             timeMinutes.textContent = correctTimeView(timer.minutes);
             timeSeconds.textContent = correctTimeView(timer.seconds);           
         }
 
-		let comeOn = setInterval(updateClock, 1000);
+		let comeOn = setTimeout(updateClock, 1000);
 
     }
 
-    countTimer('31 july 2021');
+    countTimer('31 july 2020');
 
-
-
-        //menu
-        const toggleMenu = () => {
+    //menu
+    const toggleMenu = () => {
                 
             const btnMenu = document.querySelector('.menu'),
                 menu = document.querySelector('menu'),
@@ -70,9 +68,9 @@ window.addEventListener('DOMContentLoaded', function(){
             closeBtn.addEventListener('click', handlerMenu);
 
             menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
-        };
+    };
 
-        toggleMenu();
+    toggleMenu();
 	
 	//popup   
 	const togglePopup = () => {
@@ -85,4 +83,6 @@ window.addEventListener('DOMContentLoaded', function(){
 			});
 		popupClose.addEventListener('click', () => popup.style.display = 'none')
 		}   
-	})
+})
+
+    
