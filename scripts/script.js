@@ -33,19 +33,23 @@ window.addEventListener('DOMContentLoaded', function(){
 		
         function updateClock() {
             let timer = getTimeRemaining();
-            //console.log(timer);
+            console.log(timer);
 			if (timer.timeRemaining < 0){
 				document.querySelector('.timer-numbers').style.color = 'red';
-				clearInterval(comeOn);
+				clearTimeout();
+				//clearInterval(comeOn);
+			}else{
+				setTimeout(updateClock,1000)
 			}
             timeHours.textContent = correctTimeView(timer.hours);
             timeMinutes.textContent = correctTimeView(timer.minutes);
             timeSeconds.textContent = correctTimeView(timer.seconds);           
         }
 
-		let comeOn = setInterval(updateClock, 1000);
+		updateClock();
+		// let comeOn = setInterval(updateClock, 1000);
 
     }
 
-    countTimer('31 july 2021');
+    countTimer('31 july 2020');
 })
