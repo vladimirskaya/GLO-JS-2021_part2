@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', function(){
-    'use strict'
+    'use strict';
 
     // Timer
     function countTimer(deadline){
@@ -33,16 +33,17 @@ window.addEventListener('DOMContentLoaded', function(){
 		
         function updateClock() {
             let timer = getTimeRemaining();
-            //console.log(timer);
+            console.log(timer);
 			if (timer.timeRemaining < 0){
 				document.querySelector('.timer-numbers').style.color = 'red';
-				clearInterval(comeOn);
+				clearTimeout(comeOn);
 			}
             timeHours.textContent = correctTimeView(timer.hours);
             timeMinutes.textContent = correctTimeView(timer.minutes);
             timeSeconds.textContent = correctTimeView(timer.seconds);           
         }
 
+<<<<<<< HEAD
 		let comeOn = setInterval(updateClock, 1000);
 
     }
@@ -53,6 +54,16 @@ window.addEventListener('DOMContentLoaded', function(){
 
         //menu
         const toggleMenu = () => {
+=======
+		let comeOn = setTimeout(updateClock, 1000);
+
+    }
+
+    countTimer('31 july 2020');
+
+    //menu
+    const toggleMenu = () => {
+>>>>>>> 0992b5cdf1d955c65d16e8402095bf3f86185197
                 
             const btnMenu = document.querySelector('.menu'),
                 menu = document.querySelector('menu'),
@@ -60,13 +71,41 @@ window.addEventListener('DOMContentLoaded', function(){
                 menuItems = menu.querySelectorAll('ul>li');
 
             const handlerMenu = function(){
+<<<<<<< HEAD
                     menu.classList.toggle('active-menu');
+=======
+                    if (!menu.style.transform || menu.style.transform === `translate(-100%)`)   {
+                        menu.style.transform = `translate(0)`;
+                    }else{
+                        menu.style.transform = `translate(-100%)`;
+                }
+>>>>>>> 0992b5cdf1d955c65d16e8402095bf3f86185197
             };
             btnMenu.addEventListener('click', handlerMenu);
             closeBtn.addEventListener('click', handlerMenu);
 
             menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
+<<<<<<< HEAD
         };
 
         toggleMenu();
+=======
+    };
+
+    toggleMenu();
+	
+	//popup   
+	const togglePopup = () => {
+		const popup = document.querySelector('.popup'),
+			popupBtn = document.querySelectorAll('.popup-btn'),
+			popupClose = document.querySelector('.popup-close');
+			
+		popupBtn.forEach((elem) => {
+			elem.addEventListener('click', () => popup.style.display = "block")
+			});
+		popupClose.addEventListener('click', () => popup.style.display = 'none')
+		}   
+>>>>>>> 0992b5cdf1d955c65d16e8402095bf3f86185197
 })
+
+    
