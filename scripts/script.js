@@ -37,8 +37,6 @@ window.addEventListener('DOMContentLoaded', function(){
 			if (timer.timeRemaining < 0){
 				document.querySelector('.timer-numbers').style.color = 'red';
 				clearTimeout(comeOn);
-			}else{
-				setTimeout(updateClock,1000);
 			}
             timeHours.textContent = correctTimeView(timer.hours);
             timeMinutes.textContent = correctTimeView(timer.minutes);
