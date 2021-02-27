@@ -86,4 +86,3 @@ window.addEventListener('DOMContentLoaded', function(){
 		popupClose.addEventListener('click', () => popup.style.display = 'none')
 		}   
 	})
-})
