@@ -39,7 +39,7 @@ window.addEventListener('DOMContentLoaded', function(){
 				clearTimeout();
 				//clearInterval(comeOn);
 			}else{
-				setTimeout(updateClock,1000)
+				setTimeout(updateClock,1000);
 			}
             timeHours.textContent = correctTimeView(timer.hours);
             timeMinutes.textContent = correctTimeView(timer.minutes);
