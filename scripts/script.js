@@ -36,20 +36,15 @@ window.addEventListener('DOMContentLoaded', function(){
             console.log(timer);
 			if (timer.timeRemaining < 0){
 				document.querySelector('.timer-numbers').style.color = 'red';
-				clearTimeout();
-				//clearInterval(comeOn);
-			}else{
-				setTimeout(updateClock,1000);
+				clearTimeout(comeOn);
 			}
             timeHours.textContent = correctTimeView(timer.hours);
             timeMinutes.textContent = correctTimeView(timer.minutes);
             timeSeconds.textContent = correctTimeView(timer.seconds);           
         }
 
-		updateClock();
-		// let comeOn = setInterval(updateClock, 1000);
+		let comeOn = setTimeout(updateClock, 1000);
+		countTimer('31 july 2020');
+	}}
 
-    }
-
-    countTimer('31 july 2020');
-})
+    
