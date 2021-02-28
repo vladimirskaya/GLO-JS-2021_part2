@@ -72,7 +72,7 @@ window.addEventListener('DOMContentLoaded', function () {
     const togglePopup = () => {
         let count = 0, // для перемещения от границы окна
             comeOn,
-            intViewerWidth = window.innerWidth;
+            intViewerWidth = document.documentElement.clientWidth;
         console.log('ширина онка intViewerWidth', intViewerWidth);
         const popup = document.querySelector('.popup'), // само окно
             popupBtn = document.querySelectorAll('.popup-btn'), // кнопка раскрытия окна
