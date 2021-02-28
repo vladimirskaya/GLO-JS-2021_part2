@@ -75,8 +75,7 @@ window.addEventListener('DOMContentLoaded', function () {
             intViewerWidth = window.innerWidth;
         console.log('ширина онка intViewerWidth', intViewerWidth);
         const popup = document.querySelector('.popup'), // само окно
-            popupBtn = document.querySelectorAll('.popup-btn'), // кнопка раскрытия окна
-            popupClose = document.querySelector('.popup-close');
+            popupBtn = document.querySelectorAll('.popup-btn'); // кнопка раскрытия окна
 
         popupBtn.forEach((elem) => {
             elem.addEventListener('click', () => {
@@ -104,10 +103,18 @@ window.addEventListener('DOMContentLoaded', function () {
                 }
             });
         });
-        popupClose.addEventListener('click', () => {
-            popup.style.display = 'none';
 
-        })
+        popup.addEventListener('click', (event) => {
+            let target = event.target;
+            if(target.classList.contains('popup-close')){
+                popup.style.display = 'none';
+            } else {
+                target = target.closest('.popup-content');
+                if(!target){
+                    popup.style.display = 'none';
+                }
+            }           
+        });
     }
 
     togglePopup();
@@ -132,9 +139,9 @@ window.addEventListener('DOMContentLoaded', function () {
 
         tabHeader.addEventListener('click', (event) => {
             let target = event.target;
-            console.log('target1: ', target);
+            //console.log('target1: ', target);
             target = target.closest('.service-header-tab');
-            console.log('target2: ', target);
+            //console.log('target2: ', target);
             if (target) {
                 tab.forEach((item, i) => {
                     if (item === target) {
@@ -144,7 +151,7 @@ window.addEventListener('DOMContentLoaded', function () {
             }
         });
     };
+    
     tabs();
-
 
 })
