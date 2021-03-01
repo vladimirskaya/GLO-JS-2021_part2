@@ -53,38 +53,52 @@ window.addEventListener('DOMContentLoaded', function () {
     const toggleMenu = () => {
 
         const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu'),
-            closeBtn = document.querySelector('.close-btn'),
-            menuItems = menu.querySelectorAll('ul>li');
+				menu = document.querySelector('menu');
 
         const handlerMenu = function () {
             menu.classList.toggle('active-menu');
         };
+		
+		//первый обработчик, через делегирование
+	menu.addEventListener('click', (event) => {
+		let target = event.target;
+            //console.log('target1: ', target);
+            target = target.closest('a'); // найдет ближайшую ссылку
+            //console.log('target2: ', target);*/
+			if (target){
+				//console.log('зашло в условие, причем таргет сейчас: ', target);
+				handlerMenu();	
+			}
+		
+	});
+		
+		// второй обработчик без делегирования (сделать один общий для двух <- услож.)
         btnMenu.addEventListener('click', handlerMenu);
-        closeBtn.addEventListener('click', handlerMenu);
-
-        menuItems.forEach((elem) => elem.addEventListener('click', handlerMenu));
     };
 
     toggleMenu();
 
     //popup  
     const togglePopup = () => {
-        let count = 0, // для перемещения от границы окна
-            comeOn,
-            intViewerWidth = window.innerWidth;
-        console.log('ширина онка intViewerWidth', intViewerWidth);
         const popup = document.querySelector('.popup'), // само окно
             popupBtn = document.querySelectorAll('.popup-btn'); // кнопка раскрытия окна
 
         popupBtn.forEach((elem) => {
             elem.addEventListener('click', () => {
+                const modalWindow = popup.querySelector('.popup-content');
+                
+                let comeOn, 
+                    count = 0, // счетчик для перемещения от границы окна
+                    clientWidth = document.documentElement.clientWidth,
+                    coordinates = modalWindow.getBoundingClientRect();
+                console.log('ширина онка clientWidth', clientWidth);
 
                 function animatePopup() {
                     count += 20;
                     modalWindow.style.left = count + 'px';
-                    if (parseFloat(modalWindow.style.left) > (intViewerWidth - coordinates.width) / 2) {
-                        //console.log('comeOn');
+                    if (parseFloat(modalWindow.style.left) > (clientWidth - coordinates.width) / 2) {
+                        console.log('comodalWindow.style.left = ',modalWindow.style.left);
+                        console.log((clientWidth - coordinates.width) / 2 );
                         clearTimeout(comeOn);
                         return;
                     }
@@ -92,11 +106,9 @@ window.addEventListener('DOMContentLoaded', function () {
                 }
 
                 // popup.style.position = 'relative';
-                popup.style.display = "block";
-                const modalWindow = popup.querySelector('.popup-content');
-                let coordinates = modalWindow.getBoundingClientRect();
+                popup.style.display = "block";                          
                 modalWindow.style.left = `-${coordinates.width}px`;
-                if (intViewerWidth > 768) {
+                if (clientWidth > 768) {
                     comeOn = setTimeout(animatePopup, 15);
                 } else {
                     modalWindow.style.left = `${coordinates.x}px`;
