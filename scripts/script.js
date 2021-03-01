@@ -95,7 +95,8 @@ window.addEventListener('DOMContentLoaded', function () {
                 // popup.style.position = 'relative';
                 popup.style.display = "block";
                 const modalWindow = popup.querySelector('.popup-content');
-                let coordinates = modalWindow.getBoundingClientRect();
+                let coordinates = modalWindow.getBoundingClientRect(),
+                    count = 0;
                 modalWindow.style.left = `-${coordinates.width}px`;
                 if (intViewerWidth > 768) {
                     comeOn = setTimeout(animatePopup, 15);
