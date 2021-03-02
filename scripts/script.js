@@ -53,26 +53,26 @@ window.addEventListener('DOMContentLoaded', function () {
     const toggleMenu = () => {
 
         const btnMenu = document.querySelector('.menu'),
-				menu = document.querySelector('menu');
+            menu = document.querySelector('menu');
 
         const handlerMenu = function () {
             menu.classList.toggle('active-menu');
         };
-		
-		//первый обработчик, через делегирование
-	menu.addEventListener('click', (event) => {
-		let target = event.target;
+
+        //первый обработчик, через делегирование
+        menu.addEventListener('click', (event) => {
+            let target = event.target;
             //console.log('target1: ', target);
             target = target.closest('a'); // найдет ближайшую ссылку
             //console.log('target2: ', target);*/
-			if (target){
-				//console.log('зашло в условие, причем таргет сейчас: ', target);
-				handlerMenu();	
-			}
-		
-	});
-		
-		// второй обработчик без делегирования (сделать один общий для двух <- услож.)
+            if (target) {
+                //console.log('зашло в условие, причем таргет сейчас: ', target);
+                handlerMenu();
+            }
+
+        });
+
+        // второй обработчик без делегирования (сделать один общий для двух <- услож.)
         btnMenu.addEventListener('click', handlerMenu);
     };
 
@@ -86,8 +86,8 @@ window.addEventListener('DOMContentLoaded', function () {
         popupBtn.forEach((elem) => {
             elem.addEventListener('click', () => {
                 const modalWindow = popup.querySelector('.popup-content');
-                
-                let comeOn, 
+
+                let comeOn,
                     count = 0, // счетчик для перемещения от границы окна
                     clientWidth = document.documentElement.clientWidth,
                     coordinates = modalWindow.getBoundingClientRect();
@@ -97,8 +97,8 @@ window.addEventListener('DOMContentLoaded', function () {
                     count += 20;
                     modalWindow.style.left = count + 'px';
                     if (parseFloat(modalWindow.style.left) > (clientWidth - coordinates.width) / 2) {
-                        console.log('comodalWindow.style.left = ',modalWindow.style.left);
-                        console.log((clientWidth - coordinates.width) / 2 );
+                        console.log('comodalWindow.style.left = ', modalWindow.style.left);
+                        console.log((clientWidth - coordinates.width) / 2);
                         clearTimeout(comeOn);
                         return;
                     }
@@ -106,7 +106,7 @@ window.addEventListener('DOMContentLoaded', function () {
                 }
 
                 // popup.style.position = 'relative';
-                popup.style.display = "block";                          
+                popup.style.display = "block";
                 modalWindow.style.left = `-${coordinates.width}px`;
                 if (clientWidth > 768) {
                     comeOn = setTimeout(animatePopup, 15);
@@ -174,18 +174,18 @@ window.addEventListener('DOMContentLoaded', function () {
             portfolioDots = document.querySelector('.portfolio-dots'),
             slider = document.querySelector('.portfolio-content');
 
-			for (let i = 0; i < slide.length; i++){
-				let dot = document.createElement('li');
-				if (i === 0) dot.className = 'dot dot-active';
-				else dot.className = 'dot';
-				portfolioDots.append(dot);
-			}
-			
-		const dot = portfolioDots.querySelectorAll('.dot');
-              
+        for (let i = 0; i < slide.length; i++) {
+            let dot = document.createElement('li');
+            if (i === 0) dot.className = 'dot dot-active';
+            else dot.className = 'dot';
+            portfolioDots.append(dot);
+        }
+
+        const dot = portfolioDots.querySelectorAll('.dot');
+
         let currentSlide = 0,
             interval;
-        
+
         const prevSlide = (elem, index, strClass) => {
             elem[index].classList.remove(strClass);
         };
@@ -216,14 +216,14 @@ window.addEventListener('DOMContentLoaded', function () {
             let target = event.target;
 
             prevSlide(slide, currentSlide, 'portfolio-item-active');
-                prevSlide(dot, currentSlide, 'dot-active');
+            prevSlide(dot, currentSlide, 'dot-active');
             // if(!target.matches('.portfolio-btn, .dot')){
             //     return;
             // }
-            
+
             if (target.matches('#arrow-right')) {
                 currentSlide++;
-            } else if (target.matches('#arrow-left')){
+            } else if (target.matches('#arrow-left')) {
                 currentSlide--;
             } else if (target.matches('.dot')) {
                 dot.forEach((elem, index) => {
@@ -233,32 +233,32 @@ window.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            if(currentSlide >= slide.length){
+            if (currentSlide >= slide.length) {
                 currentSlide = 0;
             }
 
-            if (currentSlide < 0){
+            if (currentSlide < 0) {
                 currentSlide = slide.length - 1;
             }
 
             nextSlide(slide, currentSlide, 'portfolio-item-active');
             nextSlide(dot, currentSlide, 'dot-active');
-    
+
         });
 
-//обработчик события на весь слайдер
-slider.addEventListener('mouseover', (event) =>{
-    if(event.target.matches('.portfolio-btn') || 
-        event.target.matches('.dot')){
-            stopSlide();
-        }
-});
-slider.addEventListener('mouseout', (event) =>{
-    if(event.target.matches('.portfolio-btn') || 
-        event.target.matches('.dot')){
-            startSlide();
-        }
-});
+        //обработчик события на весь слайдер
+        slider.addEventListener('mouseover', (event) => {
+            if (event.target.matches('.portfolio-btn') ||
+                event.target.matches('.dot')) {
+                stopSlide();
+            }
+        });
+        slider.addEventListener('mouseout', (event) => {
+            if (event.target.matches('.portfolio-btn') ||
+                event.target.matches('.dot')) {
+                startSlide();
+            }
+        });
 
         startSlide(1500);
     };
@@ -266,4 +266,27 @@ slider.addEventListener('mouseout', (event) =>{
     slider();
 
 
+    const toggleCommandPhoto = () => {
+        let targetSrcMain;
+        const command = document.querySelector('#command');
+        
+        command.addEventListener('mouseover', (event) => {
+            let target = event.target.closest('img');
+            if (target !== null) {
+                console.log(target.src);
+                targetSrcMain = target.src;
+                target.src = target.dataset.img;
+                console.log(target.src);
+            }
+        });
+
+        command.addEventListener('mouseout', (event) => {
+            let target = event.target.closest('img');
+            if (target !== null) {
+                target.src = targetSrcMain;
+            }
+
+        });
+    }
+    toggleCommandPhoto();
 })
