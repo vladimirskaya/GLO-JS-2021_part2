@@ -265,11 +265,11 @@ window.addEventListener('DOMContentLoaded', function () {
 
     slider();
 
-
+    //Block Our Team
     const toggleCommandPhoto = () => {
         let targetSrcMain;
         const command = document.querySelector('#command');
-        
+
         command.addEventListener('mouseover', (event) => {
             let target = event.target.closest('img');
             if (target !== null) {
@@ -289,4 +289,78 @@ window.addEventListener('DOMContentLoaded', function () {
         });
     }
     toggleCommandPhoto();
+
+
+    //block check validation Connection
+    const checkInputs = () => {
+        const form2 = document.querySelector('#form2'),
+            inputAll = form2.querySelectorAll('input');
+            inputAll.forEach((item) => {item.value = ''});
+        let correctValue = '';
+
+        const checkInput = (t) => {
+            console.log('target name', t.name);
+            if (t.name === 'user_name' || t.name === 'user_message') {
+                correctValue = validAlpha(t,t.name);
+            }else if (t.name === 'user_email') {
+                correctValue = validEmail(t);
+            }else if (t.name === 'user_phone') {
+                correctValue = validPhone(t);
+            }
+            t.value = correctValue;
+        }
+
+        form2.addEventListener('change', (event) => {
+            let target = event.target.closest('input');
+            // console.log('target in form', target);
+            target.addEventListener('blur', checkInput(target));
+        });
+
+        // //Ф. обеспечивает ввод только киррилицы,дефиса и пробела
+        function validAlpha(item,name){
+            const regEx = /[A-Za-z\d\@\#\$\%\^\&\*\~\`\;]/gi;
+            item = item.value.trim().replace(regEx, '').replace(/\ {2,}/g, ' ').replace(/\-{2,}/g, '-');
+            // console.log(item);
+            if(name === 'user_name'){
+                item = item[0].toUpperCase() + item.slice(1).toLowerCase();
+            }
+            return item;    
+            };
+
+        function validEmail(item){
+            const regEx = /^[\w\-\_\.\!\~\*\']+\@[\w\-\_\.\!\~\*\']+\.(\w{2,3})$/;
+
+            if(regEx.test(item.value)) return item;
+            else {
+                alert('Электронная почта введена неверно.');
+                return '';    
+            };
+        }
+        
+        function validPhone(item){
+            const regEx = /[a-zа-я\s\!\#\$\%\^\&\*\_\+\[\]\{\}\'\"\:\;]/gi;
+            // console.log(item.value);
+            item = item.value.replace(regEx, '');
+            item = item.trim().replace(/\ {2,}/, ' ').replace(/\-{2,}/, '-').replace(/\({2,}/,'(').replace(/\){2,}/, ')');
+            // console.log(item);
+            return item;    
+            };    
+        }
+     checkInputs();
+
+    //Ф. обеспечивает ввод только цифр в калькуляторе в калькуляторе  
+    const validCalcNumber = () =>{
+        const inputsCalcBlock = document.querySelectorAll('.calc-block > input');
+        inputsCalcBlock.forEach(item => {item.value = ''});
+        // console.log(inputsCalcBlock);
+        inputsCalcBlock.forEach((item) => {
+            item.addEventListener('input', (event) =>{
+                event.target.value = event.target.value.replace(/\D/g, '');    
+            })
+        });
+
+    };
+    validCalcNumber();
+
+
 })
