@@ -331,14 +331,14 @@ window.addEventListener('DOMContentLoaded', function () {
                 }
                 target.value = target.value.replace(regEx, '');
 				
-                if (target.name === 'user_phone'){
+               if (target.name === 'user_phone'){
 					if (/^\+/.test(target.value)) target.value = '+' + target.value.replace(/\+/g, '');
 					else if (/^[\(\)\-]/.test(target.value)) target.value = '';
+					else target.value = target.value.replace(/\+/g, '');
                 }
-				if (target.name === 'user_email' && !!/^\W/.test(target.value)){
+		if (target.name === 'user_email' && !!/^\W/.test(target.value)){
 					target.value = '';
-				}
-				
+		}	
             });
 
             let inputs = form.querySelectorAll('input');
