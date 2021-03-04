@@ -314,7 +314,7 @@ window.addEventListener('DOMContentLoaded', function () {
         };
         validCalcNumber();
 
-        //Часть 2. Проверка форм отправки сообщений
+               //Часть 2. Проверка форм отправки сообщений
         const forms = document.querySelectorAll('form');
 
         forms.forEach((form) => {
@@ -334,9 +334,16 @@ window.addEventListener('DOMContentLoaded', function () {
                 }
                 //console.log(regEx);
                 target.value = target.value.replace(regEx, '');
-                if (target.name === 'user_phone' && target.value.indexOf('+') !== -1) {
-                    target.value = '+' + target.value.replace(/\+/g, '');
+				
+                if (target.name === 'user_phone'){
+					if (/^\+/.test(target.value)) target.value = '+' + target.value.replace(/\+/g, '');
+					else if (/^[\(\)\-]/.test(target.value)) target.value = '';
                 }
+				if (target.name === 'user_email' && !!/^\W/.test(target.value)){
+					//console.log('target.value = ',target.value[0] )
+					target.value = '';
+				}
+				
             });
 
             let inputs = form.querySelectorAll('input');
@@ -382,7 +389,7 @@ window.addEventListener('DOMContentLoaded', function () {
                                 // console.log(value.indexOf(')') !== -1 && value.indexOf('(') !== -1 && value.indexOf('-') !== -1);
                                 correctValue = value;
                             } else {
-                                value = value.replace(/\-/g, '').replace(/\(/g, '').replace(/\)/g, '');
+                                value = value.replace(/\-/g, '').replace(/\(/g, '').replace(/\)/g, '').replace(/\+/, '');
                                 // console.log('gjckt elfktybz - & ): ', value);
                                 // console.log(value.length);
                                 switch (String(value.length)) {
@@ -391,21 +398,17 @@ window.addEventListener('DOMContentLoaded', function () {
                                     case '3':
                                     case '4':
                                     case '5':
-                                        correctValue = value;
+                                        correctValue = '+' + value;
                                         // console.log('1-5: correctValue = ', correctValue);
                                         break;
                                     case '6':
                                     case '7':
-                                        correctValue = value.slice(0, 3) + '-' + value.slice(3);
+									case '8':
+                                        correctValue = '+' + value[0] + '(' + value.slice(1, 4) + ')' + value.slice(4);
                                         // console.log('6-7: correctValue = ', correctValue);
                                         break;
-                                    case '8':
-                                    case '9':
-                                        correctValue = value.slice(0, 4) + '-' + value.slice(4);
-                                        // console.log('8-9: correctValue = ', correctValue);
-                                        break;
-                                    default:
-                                        correctValue = value[0] + '(' + value.slice(1, 4) + ')' + value.slice(4, 7) + '-' + value.slice(7);
+									default:
+                                        correctValue = '+' + value[0] + '(' + value.slice(1, 4) + ')' + value.slice(4,7) + '-' + value.slice(7);
                                         // console.log('>10: correctValue = ', correctValue);
                                 }
                             }
@@ -419,8 +422,8 @@ window.addEventListener('DOMContentLoaded', function () {
                             regeXBeforeDog = /.+\@/,
                             //удаляем сдвоенные @ и .
                             value = t.value.replace(/\@{2,}/g, '@').replace(/\.{2,}/g, '.');
-                            //удаляем точки и собак в начале и в конце - согласно стандартам почта не может так начинаться и заканчиваться
-                            value = value.replace(/^\./, '').replace(/\.$/, '').replace(/^\@/, '').replace(/\@$/, '');
+                            //удаляем точки и собак в конце - согласно стандартам почта не может так заканчиваться
+                            value = value.replace(/\.$/, '').replace(/\@$/, '');
                             // console.log('validMail value after all del = ', value);
 
                             // При таком эмейле sdsadas@@@dew------w*!~~er.rt сотрёт все собачки и оставит все символы ==> sdsadasdew------w*!~~er.rt.
@@ -441,42 +444,32 @@ window.addEventListener('DOMContentLoaded', function () {
                                 let before_domen2 = String(value.match(regExBeforeDot)),//     === sdsadas@dew------w*!~~er.
 
                                     //получаем вторую часть домена - т.е. что идет после точки. Значение без точки, поэтому добавляем впереди точку 
-                                    domen2 = '.' + value.replace(before_domen2, '').replace(/[^A-Z0-9\-]/gi, '');  // === '.' + rt  ===> .rt
-                                    // console.log(domen2,domen2.lastIndexOf('-'), domen2.length - 1 );
-                                    if (domen2.lastIndexOf('-') === domen2.length - 1){
-                                        let domen2Arr = domen2.split('');
-                                        // console.log(domen2Arr);
-                                        let flag = true,
-                                            i = domen2Arr.length - 1;
-                                        do {
-                                            if (domen2Arr[i] === '-') {
-                                                domen2Arr[i] = '';
-                                                i--;
-                                            }else flag = false;
-                                        } while (flag) ;
-                                        // console.log(domen2Arr);
-                                        domen2 = '';
-                                        domen2Arr.forEach(elem => domen2 += elem);
-                                        // console.log(domen2);
-                                    }
+                                    domen2 = value.replace(before_domen2, '').replace(/[^A-Z0-9]/gi, '');  // ===  rt  
+                                   
                                     //получаем все символы ,что стоят перед последней собакой
                                     //ищем в строке, которую до последней точки, т.е. в  sdsadas@dew------w*!~~er.
                                     let before_domen1 = String(before_domen2.match(regeXBeforeDog)),  // === sdsadas@
 
                                     // получаем первую часть домена, что обычно стоит за @
                                     // из строки - что до последней точки
-                                    domen1 = '@' + before_domen2.replace(before_domen1, '').replace(/[^A-Z0-9\-]/gi, ''), 
-                                    // из sdsadas@dew------w*!~~er. удаляем sdsadas@, получаем dew------w*!~~er. Удаляем все недопустимые символы (можно A-Z, -, 0-9)
+                                    domen1 = before_domen2.replace(before_domen1, '').replace(/[^A-Z0-9\-]/gi, '').replace(/\-{2,}/g, ''); 
+                                    // из sdsadas@dew------w*!~~er. удаляем sdsadas@, получаем dew------w*!~~er. Удаляем все недопустимые символы (можно A-Z, -, 0-9),а также последовательности дефисов
 
+									 // console.log(domen2,domen2.lastIndexOf('-'), domen2.length - 1 );
+                                    if (domen1.slice(-1) === '-') domen1 = domen1.slice(0,-1);
+									if (domen1[0] === '-') domen1 = domen1.slice(1);							
+									//console.log(domen1);
+                                   
+									
                                     //получаем логин из sdsadas@
-                                    login = before_domen1.replace(/\@/g, '');
+                                    let login = before_domen1.replace(/\@/g, '');
 
-                                correctValue = login + domen1 + domen2;
+                                correctValue = login + '@' + domen1 + '.' + domen2;
 
                                 // console.log('Само значение: ', t.value);
                                 // console.log('че получили: correctValue ', correctValue);
                                 // console.log('login = ', login);
-                                // console.log('before_domen1 = ', before_domen1, ' => midBit =', domen1);
+                                //console.log('before_domen1 = ', before_domen1, ' => midBit =', domen1);
                                 // console.log('before_domen2 = ', before_domen2, ' => lastBit =', domen2);
                             }
 
