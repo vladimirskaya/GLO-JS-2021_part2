@@ -33,11 +33,14 @@ window.addEventListener('DOMContentLoaded', function () {
 
         function updateClock() {
             let timer = getTimeRemaining();
-            //console.log(timer);
-            if (timer.timeRemaining < 0) {
-                document.querySelector('.timer-numbers').style.color = 'red';
-                clearTimeout(comeOn);
-            }
+            // console.log(timer);
+			if (timer.timeRemaining < 0){
+				document.querySelector('.timer-numbers').style.color = 'red';
+				clearTimeout(updateClock);
+			}else{
+				setTimeout(updateClock,1000);
+            };  
+
             timeHours.textContent = correctTimeView(timer.hours);
             timeMinutes.textContent = correctTimeView(timer.minutes);
             timeSeconds.textContent = correctTimeView(timer.seconds);
