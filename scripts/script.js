@@ -327,14 +327,16 @@ window.addEventListener('DOMContentLoaded', function () {
                 if (target.name === 'user_name' || target.name === 'user_message') {
                     regEx = /[^а-я\ \-]/gi;
                 } else if (target.name === 'user_phone') {
-                    regEx = /[^\d\-\(\)]/g;
+                    //regEx = /[^\d\-\(\)\+]/g;
+                    regEx = /[^\d\-\(\)\+]/g ;
                 } else if (target.name === 'user_email') {
                     regEx = /[^a-z\@\-\_\.\!\~\*\']/gi;
                 }
                 //console.log(regEx);
                 target.value = target.value.replace(regEx, '');
-
-                // target.addEventListener('blur',(target) =>{
+                if (target.name === 'user_phone' && target.value.indexOf('+') !== -1) {
+                    target.value = '+' + target.value.replace(/\+/g, '');
+                }
             });
 
             let inputs = form.querySelectorAll('input');
@@ -415,21 +417,60 @@ window.addEventListener('DOMContentLoaded', function () {
                         let correctValue = '',
                             regExBeforeDot = /.+\./,
                             regeXBeforeDog = /.+\@/,
-
+                            //удаляем сдвоенные @ и .
                             value = t.value.replace(/\@{2,}/g, '@').replace(/\.{2,}/g, '.');
-                        // console.log('validMail value after all del = ', value);
+                            //удаляем точки и собак в начале и в конце - согласно стандартам почта не может так начинаться и заканчиваться
+                            value = value.replace(/^\./, '').replace(/\.$/, '').replace(/^\@/, '').replace(/\@$/, '');
+                            // console.log('validMail value after all del = ', value);
+
+                            // При таком эмейле sdsadas@@@dew------w*!~~er.rt сотрёт все собачки и оставит все символы ==> sdsadasdew------w*!~~er.rt.
+                            // В таком кейсе собачку 1 нужно оставлять и всё что идёт после собачки проверять\удалять оставив только буквы и 1 точку. Но это опасная зона, можешь удалить не так как надо или оставить не там где надо точку, по этому лучше проверку емейла проработать больше на реплейс и событие инпут нежели на блюр.
+                            // На блюр можно удалять пробелы, например. На крайний случай повторяемые собачки и повторяемые точки подряд, то есть @@@ или ..... , если на реплейсе не удалось это реализовать по какой-либо причине
+                            
+
+
 
                         if (value) {
+                                //если собака стоит после самой последней точки     если вообще нет @           если вообще нет точки
                             if (value.lastIndexOf('@') > value.lastIndexOf('.') || value.indexOf('@') === -1 || value.indexOf('.') === -1) {
                                 correctValue = value;
                                 //console.log('нет собаки или нет точки или собака стоит позже точки');
 
                             } else {
-                                let before_domen2 = String(value.match(regExBeforeDot)),
-                                    domen2 = value.replace(before_domen2, '').replace(/\@/g, ''),
-                                    before_domen1 = before_domen2.match(regeXBeforeDog) !== null ? String(before_domen2.match(regeXBeforeDog)) : '',
-                                    domen1 = before_domen2.replace(before_domen1, ''),
+                                    // находит все символы до последней точки, т.к. жадный поиск. Полученная строка содержит этй точку.            
+                                let before_domen2 = String(value.match(regExBeforeDot)),//     === sdsadas@dew------w*!~~er.
+
+                                    //получаем вторую часть домена - т.е. что идет после точки. Значение без точки, поэтому добавляем впереди точку 
+                                    domen2 = '.' + value.replace(before_domen2, '').replace(/[^A-Z0-9\-]/gi, '');  // === '.' + rt  ===> .rt
+                                    // console.log(domen2,domen2.lastIndexOf('-'), domen2.length - 1 );
+                                    if (domen2.lastIndexOf('-') === domen2.length - 1){
+                                        let domen2Arr = domen2.split('');
+                                        // console.log(domen2Arr);
+                                        let flag = true,
+                                            i = domen2Arr.length - 1;
+                                        do {
+                                            if (domen2Arr[i] === '-') {
+                                                domen2Arr[i] = '';
+                                                i--;
+                                            }else flag = false;
+                                        } while (flag) ;
+                                        // console.log(domen2Arr);
+                                        domen2 = '';
+                                        domen2Arr.forEach(elem => domen2 += elem);
+                                        // console.log(domen2);
+                                    }
+                                    //получаем все символы ,что стоят перед последней собакой
+                                    //ищем в строке, которую до последней точки, т.е. в  sdsadas@dew------w*!~~er.
+                                    let before_domen1 = String(before_domen2.match(regeXBeforeDog)),  // === sdsadas@
+
+                                    // получаем первую часть домена, что обычно стоит за @
+                                    // из строки - что до последней точки
+                                    domen1 = '@' + before_domen2.replace(before_domen1, '').replace(/[^A-Z0-9\-]/gi, ''), 
+                                    // из sdsadas@dew------w*!~~er. удаляем sdsadas@, получаем dew------w*!~~er. Удаляем все недопустимые символы (можно A-Z, -, 0-9)
+
+                                    //получаем логин из sdsadas@
                                     login = before_domen1.replace(/\@/g, '');
+
                                 correctValue = login + domen1 + domen2;
 
                                 // console.log('Само значение: ', t.value);
