@@ -392,18 +392,12 @@ window.addEventListener('DOMContentLoaded', function () {
                                 value = value.replace(/\-/g, '').replace(/\(/g, '').replace(/\)/g, '').replace(/\+/, '');
                                 // console.log('gjckt elfktybz - & ): ', value);
                                 // console.log(value.length);
-                                switch (String(value.length)) {
-                                    case '1':
-                                    case '2':
-                                    case '3':
-                                    case '4':
-                                    case '5':
+                                 switch (true) {
+                                    case 1 <= value.length && value.length <= 5:
                                         correctValue = '+' + value;
                                         // console.log('1-5: correctValue = ', correctValue);
                                         break;
-                                    case '6':
-                                    case '7':
-									case '8':
+                                    case  6 <= value.length && value.length <= 8:
                                         correctValue = '+' + value[0] + '(' + value.slice(1, 4) + ')' + value.slice(4);
                                         // console.log('6-7: correctValue = ', correctValue);
                                         break;
