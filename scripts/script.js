@@ -369,8 +369,11 @@ window.addEventListener('DOMContentLoaded', function () {
                             value = t.value;
                         // console.log('t.value = ', value);
                         if (value){
-                            let flag = value.indexOf(')') !== -1 && value.indexOf('(') !== -1 && value.indexOf('-') !== -1;
-                            if (flag) {
+                            let flag = value.indexOf(')') !== -1 || value.indexOf('(') !== -1 || value.indexOf('-') !== -1;
+                            console.log('value.indexOf(")") !==',value.indexOf(')'));
+                            console.log('value.indexOf("(") !==',value.indexOf('('));
+                            console.log('value.indexOf("-") !==',value.indexOf('-'));
+                            if (!flag) {
                                 // console.log(value.indexOf(')') !== -1 && value.indexOf('(') !== -1 && value.indexOf('-') !== -1);
                                 correctValue = value;
                             } else {
