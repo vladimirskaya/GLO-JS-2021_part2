@@ -314,34 +314,37 @@ window.addEventListener('DOMContentLoaded', function () {
         };
         validCalcNumber();
 
-        //Часть 2. Проверка форм отправки сообщений
+              //Часть 2. Проверка форм отправки сообщений
         const forms = document.querySelectorAll('form');
 
         forms.forEach((form) => {
 
             form.addEventListener('input', (event) => {
-                let target = event.target.closest('input');
-                // console.log('target in form', target);
+                let target = event.target.closest('input');           
                 let regEx = '';
-                //console.log(' target.addEventListener(-input-, (t) =>{ заехвли + target.name',target.name);
                 if (target.name === 'user_name' || target.name === 'user_message') {
                     regEx = /[^а-я\ \-]/gi;
                 } else if (target.name === 'user_phone') {
-                    regEx = /[^\d\-\(\)]/g;
+                    regEx = /[^\d\-\(\)\+]/g ;
                 } else if (target.name === 'user_email') {
                     regEx = /[^a-z\@\-\_\.\!\~\*\']/gi;
                 }
-                //console.log(regEx);
                 target.value = target.value.replace(regEx, '');
-
-                // target.addEventListener('blur',(target) =>{
+				
+               if (target.name === 'user_phone'){
+					if (/^\+/.test(target.value)) target.value = '+' + target.value.replace(/\+/g, '');
+					else if (/^[\(\)\-]/.test(target.value)) target.value = '';
+					else target.value = target.value.replace(/\+/g, '');
+                }
+		if (target.name === 'user_email' && !!/^\W/.test(target.value)){
+					target.value = '';
+		}	
             });
 
             let inputs = form.querySelectorAll('input');
             inputs.forEach(inputItem => {
                 inputItem.addEventListener('blur', (event) => {
                     let target = event.target;
-                    //console.log('зашли в блур, таргет равен = ',target);
                     if (target.name === 'user_name' || target.name === 'user_message') {
                         validAlpha(target);
                     } else if (target.name === 'user_phone') {
@@ -353,10 +356,9 @@ window.addEventListener('DOMContentLoaded', function () {
                     function validAlpha(t) {
                         let value = t.value.replace(/\ {2,}/, ' ').replace(/\-{2,}/, '-').trim(),
                             correctValue = '';
-                        if (value) {
+                        if (!!value) {
                             if (t.name === 'user_name') {
                                 let nameArr = value.split(' ');
-                                // console.log('nameArr = ', nameArr);
                                 nameArr.forEach((item, i) => {
                                     correctValue += item[0].toUpperCase() + item.slice(1).toLowerCase() + ' ';
                                 });
@@ -370,41 +372,20 @@ window.addEventListener('DOMContentLoaded', function () {
                     function validPhone(t) {
                         let correctValue = '',
                             value = t.value;
-                        // console.log('t.value = ', value);
-                        if (value) {
-                            let flag = value.indexOf(')') !== -1 || value.indexOf('(') !== -1 || value.indexOf('-') !== -1;
-                            // console.log('value.indexOf(")") !==',value.indexOf(')'));
-                            // console.log('value.indexOf("(") !==',value.indexOf('('));
-                            // console.log('value.indexOf("-") !==',value.indexOf('-'));
-                            if (!flag) {
-                                // console.log(value.indexOf(')') !== -1 && value.indexOf('(') !== -1 && value.indexOf('-') !== -1);
+                        if (!!value) {
+                            if (!(value.includes(')') || value.includes('(')|| value.includes('-'))) {
                                 correctValue = value;
                             } else {
-                                value = value.replace(/\-/g, '').replace(/\(/g, '').replace(/\)/g, '');
-                                // console.log('gjckt elfktybz - & ): ', value);
-                                // console.log(value.length);
-                                switch (String(value.length)) {
-                                    case '1':
-                                    case '2':
-                                    case '3':
-                                    case '4':
-                                    case '5':
-                                        correctValue = value;
-                                        // console.log('1-5: correctValue = ', correctValue);
+                                value = value.replace(/\-/g, '').replace(/\(/g, '').replace(/\)/g, '').replace(/\+/, '');
+                                switch (true) {
+                                    case 1 <= value.length && value.length <= 5:
+                                        correctValue = '+' + value;
                                         break;
-                                    case '6':
-                                    case '7':
-                                        correctValue = value.slice(0, 3) + '-' + value.slice(3);
-                                        // console.log('6-7: correctValue = ', correctValue);
+                                    case  6 <= value.length && value.length <= 8:
+                                        correctValue = '+' + value[0] + '(' + value.slice(1, 4) + ')' + value.slice(4);
                                         break;
-                                    case '8':
-                                    case '9':
-                                        correctValue = value.slice(0, 4) + '-' + value.slice(4);
-                                        // console.log('8-9: correctValue = ', correctValue);
-                                        break;
-                                    default:
-                                        correctValue = value[0] + '(' + value.slice(1, 4) + ')' + value.slice(4, 7) + '-' + value.slice(7);
-                                        // console.log('>10: correctValue = ', correctValue);
+									default:
+                                        correctValue = '+' + value[0] + '(' + value.slice(1, 4) + ')' + value.slice(4,7) + '-' + value.slice(7);
                                 }
                             }
                             t.value = correctValue;
@@ -415,29 +396,20 @@ window.addEventListener('DOMContentLoaded', function () {
                         let correctValue = '',
                             regExBeforeDot = /.+\./,
                             regeXBeforeDog = /.+\@/,
-
                             value = t.value.replace(/\@{2,}/g, '@').replace(/\.{2,}/g, '.');
-                        // console.log('validMail value after all del = ', value);
-
+                            value = value.replace(/\.$/, '').replace(/\@$/, '');
                         if (value) {
-                            if (value.lastIndexOf('@') > value.lastIndexOf('.') || value.indexOf('@') === -1 || value.indexOf('.') === -1) {
+                            if (value.lastIndexOf('@') > value.lastIndexOf('.') || !value.includes('@')|| !value.includes('.')) {
                                 correctValue = value;
-                                //console.log('нет собаки или нет точки или собака стоит позже точки');
-
-                            } else {
+                            } else {           
                                 let before_domen2 = String(value.match(regExBeforeDot)),
-                                    domen2 = value.replace(before_domen2, '').replace(/\@/g, ''),
-                                    before_domen1 = before_domen2.match(regeXBeforeDog) !== null ? String(before_domen2.match(regeXBeforeDog)) : '',
-                                    domen1 = before_domen2.replace(before_domen1, ''),
-                                    login = before_domen1.replace(/\@/g, '');
-                                correctValue = login + domen1 + domen2;
-
-                                // console.log('Само значение: ', t.value);
-                                // console.log('че получили: correctValue ', correctValue);
-                                // console.log('login = ', login);
-                                // console.log('before_domen1 = ', before_domen1, ' => midBit =', domen1);
-                                // console.log('before_domen2 = ', before_domen2, ' => lastBit =', domen2);
-                            }
+                                    domen2 = value.replace(before_domen2, '').replace(/[^A-Z0-9]/gi, ''); 
+                                    let before_domen1 = String(before_domen2.match(regeXBeforeDog)), 
+                                    domen1 = before_domen2.replace(before_domen1, '').replace(/[^A-Z0-9\-]/gi, '').replace(/\-{2,}/g, ''); 
+                                    if (domen1.slice(-1) === '-') domen1 = domen1.slice(0,-1);
+									if (domen1[0] === '-') domen1 = domen1.slice(1);		
+                                    let login = before_domen1.replace(/\@/g, '');
+                                correctValue = login + '@' + domen1 + '.' + domen2; }
 
                         }
                         t.value = correctValue;
