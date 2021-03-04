@@ -34,12 +34,12 @@ window.addEventListener('DOMContentLoaded', function () {
         function updateClock() {
             let timer = getTimeRemaining();
             // console.log(timer);
-			if (timer.timeRemaining < 0){
-				document.querySelector('.timer-numbers').style.color = 'red';
-				clearTimeout(updateClock);
-			}else{
-				setTimeout(updateClock,1000);
-            };  
+            if (timer.timeRemaining < 0) {
+                document.querySelector('.timer-numbers').style.color = 'red';
+                clearTimeout(updateClock);
+            } else {
+                setTimeout(updateClock, 1000);
+            };
 
             timeHours.textContent = correctTimeView(timer.hours);
             timeMinutes.textContent = correctTimeView(timer.minutes);
@@ -341,7 +341,7 @@ window.addEventListener('DOMContentLoaded', function () {
             inputs.forEach(inputItem => {
                 inputItem.addEventListener('blur', (event) => {
                     let target = event.target;
-                        //console.log('зашли в блур, таргет равен = ',target);
+                    //console.log('зашли в блур, таргет равен = ',target);
                     if (target.name === 'user_name' || target.name === 'user_message') {
                         validAlpha(target);
                     } else if (target.name === 'user_phone') {
@@ -371,7 +371,7 @@ window.addEventListener('DOMContentLoaded', function () {
                         let correctValue = '',
                             value = t.value;
                         // console.log('t.value = ', value);
-                        if (value){
+                        if (value) {
                             let flag = value.indexOf(')') !== -1 || value.indexOf('(') !== -1 || value.indexOf('-') !== -1;
                             // console.log('value.indexOf(")") !==',value.indexOf(')'));
                             // console.log('value.indexOf("(") !==',value.indexOf('('));
@@ -408,16 +408,16 @@ window.addEventListener('DOMContentLoaded', function () {
                                 }
                             }
                             t.value = correctValue;
-                        }  
+                        }
                     };
 
                     function validMail(t) {
                         let correctValue = '',
                             regExBeforeDot = /.+\./,
                             regeXBeforeDog = /.+\@/,
-                            
+
                             value = t.value.replace(/\@{2,}/g, '@').replace(/\.{2,}/g, '.');
-                            // console.log('validMail value after all del = ', value);
+                        // console.log('validMail value after all del = ', value);
 
                         if (value) {
                             if (value.lastIndexOf('@') > value.lastIndexOf('.') || value.indexOf('@') === -1 || value.indexOf('.') === -1) {
@@ -427,10 +427,10 @@ window.addEventListener('DOMContentLoaded', function () {
                             } else {
                                 let before_domen2 = String(value.match(regExBeforeDot)),
                                     domen2 = value.replace(before_domen2, '').replace(/\@/g, ''),
-                                    before_domen1 = before_domen2.match(regeXBeforeDog) !== null ? String(before_domen2.match(regeXBeforeDog)): '',
+                                    before_domen1 = before_domen2.match(regeXBeforeDog) !== null ? String(before_domen2.match(regeXBeforeDog)) : '',
                                     domen1 = before_domen2.replace(before_domen1, ''),
                                     login = before_domen1.replace(/\@/g, '');
-                                correctValue = login  + domen1 + domen2;
+                                correctValue = login + domen1 + domen2;
 
                                 // console.log('Само значение: ', t.value);
                                 // console.log('че получили: correctValue ', correctValue);
@@ -438,7 +438,7 @@ window.addEventListener('DOMContentLoaded', function () {
                                 // console.log('before_domen1 = ', before_domen1, ' => midBit =', domen1);
                                 // console.log('before_domen2 = ', before_domen2, ' => lastBit =', domen2);
                             }
-                            
+
                         }
                         t.value = correctValue;
                     }
